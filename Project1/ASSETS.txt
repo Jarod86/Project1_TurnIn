@@ -1,0 +1,3 @@
+﻿Content/Fumiko.png - created by sylvius fischer of OpenGameArt.org (https://opengameart.org/content/fumiko-complete-charset) and released under the public domain.
+
+Content/spikedball.png - no credits needed, from OpenGameArt.org (https://opengameart.org/content/spiked-ball-0) and released under the public domain..
