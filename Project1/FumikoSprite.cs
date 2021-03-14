@@ -5,7 +5,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
-using Project1.Collisions;
+using tainicom.Aether.Physics2D.Dynamics;
+using tainicom.Aether.Physics2D.Dynamics.Contacts;
+using Project1.Screens;
+
 
 namespace Project1
 {
@@ -15,21 +18,17 @@ namespace Project1
         Right = 1,
         Down = 2,
         Left = 3,
-        
-    }
 
-    /// <summary>
-    /// class representing the Fumiko sprite
-    /// </summary>
+    }
     public class FumikoSprite
     {
-        
         private double animationTimer;
         private short animationFrame = 0;
         private GamePadState gamePadState;
         private KeyboardState keyboardState;
         private Texture2D texture;
         private bool idol = true;
+        public Body body;
 
         /// <summary>
         /// the color changes if the actor is hit by a ball
@@ -42,19 +41,21 @@ namespace Project1
         /// </summary>
         public Direction Direction;
 
-        
-        /// <summary>
-        /// position of the sprite
-        /// </summary>
-        public Vector2 position = new Vector2(10, 225);
 
-        private BoundingRectangle bounds = new BoundingRectangle(new Vector2(10-6, 225-8), 12, 16);
 
-        /// <summary>
-        /// the bounding volume in our sprite
-        /// </summary>
-        public BoundingRectangle Bounds => bounds;
 
+
+
+        public bool Colliding { get; protected set; }
+
+
+
+
+        public FumikoSprite(Body body)
+        {
+            this.body = body;
+            this.body.OnCollision += CollisionHandler;
+        }
 
         /// <summary>
         /// loads the Fumiko sprite texture
@@ -74,43 +75,38 @@ namespace Project1
         {
             gamePadState = GamePad.GetState(0);
             keyboardState = Keyboard.GetState();
+            Colliding = false;
+            float t = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            // Apply the gamepad movement with inverted Y axis
-            position += gamePadState.ThumbSticks.Left * new Vector2(1, -1);
-     
 
-            // Apply keyboard movement
-            if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W))
+
+            if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A))
             {
-                position += new Vector2(0, -1);
-                Direction = Direction.Up;
-                idol = false;
-            }
-            if(keyboardState.IsKeyDown(Keys.Down) || keyboardState.IsKeyDown(Keys.S))
-            {
-                position += new Vector2(0, 1);
-                Direction = Direction.Down;
-                idol = false;
-            }
-            if(keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A))
-            {
-                position += new Vector2(-1, 0);
+
+                body.Position += new Vector2(-1, 0);
                 Direction = Direction.Left;
                 idol = false;
                 //flipped = true;
             }
-            if(keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D))
+            if (keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D))
             {
-                position += new Vector2(1, 0);
+                body.Position += new Vector2(1, 0);
                 Direction = Direction.Right;
                 idol = false;
             }
 
-            bounds.X = position.X-6;
-            bounds.Y = position.Y-8;
 
-            
+
+
+            //checks if the actor got to the other side of the viewport
+
+
+
+
+
+
         }
+
 
 
         /// <summary>
@@ -125,7 +121,7 @@ namespace Project1
             //Update Animation frame
             if (!idol)
             {
-                if (animationTimer > 0.3)
+                if (animationTimer > .3)
                 {
                     animationFrame++;
                     if (animationFrame > 2) animationFrame = 0;
@@ -139,8 +135,16 @@ namespace Project1
             }
 
             var source = new Rectangle(animationFrame * 24, (int)Direction * 32, 24, 32);
-            spriteBatch.Draw(texture, position, source, Color);
+            spriteBatch.Draw(texture, body.Position, source, Color);
 
+        }
+        bool CollisionHandler(Fixture fixture, Fixture other, Contact contact)
+        {
+            Colliding = true;
+
+
+            return true;
         }
     }
 }
+

@@ -1,3 +1,13 @@
 ﻿Content/Fumiko.png - created by sylvius fischer of OpenGameArt.org (https://opengameart.org/content/fumiko-complete-charset) and released under the public domain.
 
 Content/spikedball.png - no credits needed, from OpenGameArt.org (https://opengameart.org/content/spiked-ball-0) and released under the public domain..
+
+Content/landscape.png - creadted by PWL of  OpenGameArt.org (https://opengameart.org/content/seamless-hd-landscape-in-parts) and released under the public domain.
+
+Content/little town - orchestral.ogg - created by Garritan Personal Orchestra of OpenGameArt.org (https://opengameart.org/content/adventure-begins) and released under the creative commons.
+
+Content/ old city theme.ogg - created by remaxim of OpenGameArt.org (https://opengameart.org/content/old-city-theme) and released under the creative commons.
+
+creative commons license https://creativecommons.org/licenses/by-sa/3.0/legalcode
+
+Used GameArchitectureExample as frame work for game 
